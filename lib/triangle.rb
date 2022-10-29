@@ -1,36 +1,28 @@
 class Triangle
-  attr_reader :a, :b, :c
-
-  def initialize(a, b, c)
-    @a = a
-    @b = b
-    @c = c
+  attr_accessor :length1 ,:length2,:length3
+  def initialize(length1,length2,length3)
+    @length1 = length1
+    @length2 = length2
+    @length3 = length3
   end
-
   def kind
-    validate_triangle
-    if a == b && b == c
+    valid_triangle
+    if length1 == length2 && length2 == length3
       :equilateral
-    elsif a == b || b == c || a == c
+    elsif length1==length2 || length2 == length3 || length3 == length1
       :isosceles
     else
       :scalene
     end
   end
-
-  def sides_greater_than_zero?
-    [a, b, c].all?(&:positive?)
+  def valid_triangle
+    raise TriangleError unless     length1 >0 && length2 >0 && length3>0 && triangle_inequality
   end
 
-  def valid_triangle_inequality?
-    a + b > c && a + c > b && b + c > a
+  def triangle_inequality
+    length1 + length2 > length3 && length1+ length3 > length2 && length2 + length3 > length1
   end
-
-  def validate_triangle
-    raise TriangleError unless sides_greater_than_zero? && valid_triangle_inequality?
-  end
-
   class TriangleError < StandardError
-  end
 
+  end
 end
